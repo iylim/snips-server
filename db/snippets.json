@@ -38,5 +38,25 @@
     "language": "HTML",
     "comments": [],
     "favorites": 0
+  },
+  {
+    "id": "CK5FPp-32",
+    "author": "Kevin",
+    "code": "console log this",
+    "title": "All your bade are belong to us",
+    "description": "does not compute",
+    "language": "assembly",
+    "comments": [],
+    "favorites": 0
+  },
+  {
+    "id": "GMvEmLpq3",
+    "author": "Kfed",
+    "code": "code code code",
+    "title": "All your base are belong to us",
+    "description": "does not compute",
+    "language": "assembly",
+    "comments": [],
+    "favorites": 0
   }
 ]

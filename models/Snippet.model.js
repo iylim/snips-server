@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const shortid = require('shortid');
 
 const dbpath = path.join(__dirname, '..', 'db', 'snippets.json');
 
@@ -15,10 +16,43 @@ const dbpath = path.join(__dirname, '..', 'db', 'snippets.json');
  * @property {number} favorites
  */
 
+/**
+ * Inserts a new snippet into DB
+ * @param {Snippet} newSnippet - the data to create the snippet with
+ * @returns {Promise<Snippet>} the created snippet
+ */
+
 /* Create */
-exports.post = async () => {
-  const something = await fs.appendFile(dbpath);
+exports.insert = async ({ author, code, title, description, language }) => {
+  // read snippets
+  // grab data from the new snippet (validate)
+  // make newSnippet a proper object
+  // generate default data (id, comments, favorites)
+  // push that object into snippets
+  // write back to the file
+  try {
+    if (!author || !code || !title || !description || !language) throw Error('Missing Properties');
+    const snippets = JSON.parse(await fs.readFile(dbpath));
+    snippets.push({
+      id: shortid.generate(),
+      author,
+      code,
+      title,
+      description,
+      language,
+      comments: [],
+      favorites: 0,
+    });
+    await fs.writeFile(dbpath, JSON.stringify(snippets));
+    return snippets[snippets.length - 1];
+  } catch (error) {
+    console.error('ERORR: Snippet did not post');
+    console.error(error);
+    throw error;
+  }
 };
+
+/* Read */
 
 /**
  * Selects snippets from db.
@@ -28,18 +62,19 @@ exports.post = async () => {
  */
 
 exports.select = async (query = {}) => {
+  // read the file
+  // parse the data
+  // filter snippets with query
+  // check if every query keys
+  // check if snippet[key] = query[key]
+  // return the data
   try {
-    // read the file
-    // parse the data
     const snippets = JSON.parse(await fs.readFile(dbpath));
-    // filter snippets with query
-    // check if every query keys
-    // check if snippet[key] = query[key]
     const filtered = snippets.filter(snippet => Object.keys(query).every(key => query[key] === snippet[key]));
-    // return the data
     return filtered;
   } catch (error) {
-    console.log('ERROR in Snippet Model');
+    console.error('ERROR: in Snippet Model');
+    console.error(error);
     throw error;
   }
 };
