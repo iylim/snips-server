@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const shortid = require('shortid');
-const { readJSONFromDB, writeJSONToDB } = require('../utils/db.utils');
+const { readJSONFromDB, writeJSONToDB } = require('../utils/db-utils');
 
 
 const dbpath = path.join(__dirname, '..', 'db', 'snippets.json');
