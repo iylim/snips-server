@@ -1,6 +1,8 @@
 const fs = require('fs').promises;
 const path = require('path');
 const shortid = require('shortid');
+const { readJSONFromDB, writeJSONToDB } = require('../utils/db.utils');
+
 
 const dbpath = path.join(__dirname, '..', 'db', 'snippets.json');
 
@@ -78,5 +80,41 @@ exports.select = async (query = {}) => {
     throw error;
   }
 };
-/* Update */
+
+exports.update = async (id, newData) => {
+  try {
+    const snippets = await readJSONFromDB('snippets');
+    const updatedSnippets = snippets.map(snippet => {
+      if (snippet.id !== id) return snippet;
+      Object.keys(newData).forEach(key => {
+        if (key in snippet) {
+          snippet[key] = newData[key];
+        }
+      });
+      return snippet;
+    });
+    // const filtered = snippets.filter(snippet => snippet.id === id);
+    // const updatedSnips = Object.assign(snippets, filtered);
+    // console.log(updatedSnips);
+    return writeJSONToDB('snippets', updatedSnippets);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 /* Delete */
+/**
+ * Deletes a snippet with a given ID
+ * @param {string} ID
+ */
+
+exports.delete = async id => {
+  try {
+    const snippets = await readJSONFromDB('snippets');
+    const filtered = snippets.filter(snippet => snippet.id !== id);
+    return writeJSONToDB('snippets', filtered);
+  } catch (error) {
+    console.error('ERROR: Entry was not deleted', error);
+    throw error;
+  }
+};
