@@ -2,7 +2,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const shortid = require('shortid');
 const { readJSONFromDB, writeJSONToDB } = require('../utils/db-utils');
-
+const ErrorWithHTTPStatus = require('../utils/errorWithHTTPStatus');
 
 const dbpath = path.join(__dirname, '..', 'db', 'snippets.json');
 
@@ -23,17 +23,9 @@ const dbpath = path.join(__dirname, '..', 'db', 'snippets.json');
  * @param {Snippet} newSnippet - the data to create the snippet with
  * @returns {Promise<Snippet>} the created snippet
  */
-
-/* Create */
 exports.insert = async ({ author, code, title, description, language }) => {
-  // read snippets
-  // grab data from the new snippet (validate)
-  // make newSnippet a proper object
-  // generate default data (id, comments, favorites)
-  // push that object into snippets
-  // write back to the file
   try {
-    if (!author || !code || !title || !description || !language) throw Error('Missing Properties');
+    if (!author || !code || !title || !description || !language) throw new ErrorWithHTTPStatus('Missing Properties', 400);
     const snippets = JSON.parse(await fs.readFile(dbpath));
     snippets.push({
       id: shortid.generate(),
@@ -48,73 +40,68 @@ exports.insert = async ({ author, code, title, description, language }) => {
     await fs.writeFile(dbpath, JSON.stringify(snippets));
     return snippets[snippets.length - 1];
   } catch (error) {
-    console.error('ERORR: Snippet did not post');
-    console.error(error);
-    throw error;
+    if (error instanceof ErrorWithHTTPStatus) throw error;
+    throw new ErrorWithHTTPStatus('Database Error!');
   }
 };
-
-/* Read */
 
 /**
  * Selects snippets from db.
  * Can accept optional query objects to filter results.
+ * Otherwise returns all snippets
  * @param {Object} [query]
  * @returns {Promise<Snippet>[]} array of Snippet Objects
  */
-
 exports.select = async (query = {}) => {
-  // read the file
-  // parse the data
-  // filter snippets with query
-  // check if every query keys
-  // check if snippet[key] = query[key]
-  // return the data
   try {
     const snippets = JSON.parse(await fs.readFile(dbpath));
     const filtered = snippets.filter(snippet => Object.keys(query).every(key => query[key] === snippet[key]));
     return filtered;
   } catch (error) {
-    console.error('ERROR: in Snippet Model');
-    console.error(error);
-    throw error;
+    throw new ErrorWithHTTPStatus('Database Error!');
   }
 };
 
+/**
+ * updates snippet in DB
+ * @param {String} id 
+ * @param {Object} newData data to be updated into db
+ */
 exports.update = async (id, newData) => {
+  // TODO: error on Id not found
   try {
     const snippets = await readJSONFromDB('snippets');
+    let foundId = false;
     const updatedSnippets = snippets.map(snippet => {
       if (snippet.id !== id) return snippet;
+      foundId = true;
       Object.keys(newData).forEach(key => {
         if (key in snippet) {
           snippet[key] = newData[key];
+        } else {
+          throw new ErrorWithHTTPStatus('Key does not Exist!', 400);
         }
       });
+      if (!foundId) throw new ErrorWithHTTPStatus('Id not found!', 400);
       return snippet;
     });
-    // const filtered = snippets.filter(snippet => snippet.id === id);
-    // const updatedSnips = Object.assign(snippets, filtered);
-    // console.log(updatedSnips);
     return writeJSONToDB('snippets', updatedSnippets);
   } catch (error) {
-    console.error(error);
+    throw new ErrorWithHTTPStatus('Database Error!');
   }
 };
 
-/* Delete */
 /**
  * Deletes a snippet with a given ID
  * @param {string} ID
  */
-
 exports.delete = async id => {
   try {
     const snippets = await readJSONFromDB('snippets');
     const filtered = snippets.filter(snippet => snippet.id !== id);
+    if (filtered.length === 0) throw new ErrorWithHTTPStatus('Snippet Does not Exist!', 400);
     return writeJSONToDB('snippets', filtered);
   } catch (error) {
-    console.error('ERROR: Entry was not deleted', error);
-    throw error;
+    throw new ErrorWithHTTPStatus('Database Error!');
   }
 };

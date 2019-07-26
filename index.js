@@ -1,20 +1,14 @@
-const Snippet = require('./models/Snippet.model');
+const express = require('express');
+const router = require('./middleware/routes');
+const logger = require('./middleware/logger');
+const errorHandler = require('./middleware/errorHandler');
 
-async function testModels() {
-  // const snippets = await Snippet.select();
-  // console.log(snippets);
-  try {
-    const newSnippet = await Snippet.insert({
-      author: 'Kfed',
-      code: 'code code code',
-      title: 'All your base are belong to us',
-      description: 'does not compute',
-      language: 'assembly',
-    });
-    console.log(newSnippet);
-  } catch (error) {
-    console.error(error);
-  }
-}
+const app = express();
 
-testModels();
+/* Middleware */
+app.use(express.json());
+app.use(logger);
+app.use(router);
+app.use(errorHandler);
+
+app.listen(5000, () => console.log(`Server running on port 5000`));
