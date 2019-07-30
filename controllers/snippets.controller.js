@@ -33,10 +33,11 @@ exports.getOne = async ({ params: { id } }, res, next) => {
   }
 };
 
+
 exports.update = async (req, res, next) => {
   try {
     const snippet = await Snippet.update(req.params.id, req.body);
-    res.send(snippet);
+    res.status(200).send(snippet);
   } catch (err) {
     next(err);
   }
@@ -44,9 +45,9 @@ exports.update = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
   try {
-    const snippet = await Snippet.delete(req.params.id);
-    res.send(snippet);
+    await Snippet.delete(req.params.id);
+    res.status(200).send('Deleted!');
   } catch (err) {
     next(err);
   }
-}
+};
