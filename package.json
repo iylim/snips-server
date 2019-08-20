@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/iylim/snips-server#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "nodemon": "^1.19.1",
     "shortid": "^2.2.14"
