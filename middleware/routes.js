@@ -16,6 +16,6 @@ router.post('/api/snippets', snippets.createSnippet);
 router.get('/api/snippets', snippets.getAll);
 router.get('/api/snippets/:id', snippets.getOne);
 router.patch('/api/snippets/:id', snippets.update);
-router.delete('/api/snippet/:id', snippets.delete);
+router.delete('/api/snippets/:id', snippets.delete);
 
 module.exports = router;
