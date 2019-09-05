@@ -1,10 +1,11 @@
 require('dotenv').config();
 const pg = require('pg');
 
-const { DB_HOST, DB_PASSWORD, DB_USER, DB_PORT, DB_DATABASE, DB_URL } = process.env;
+const { DB_HOST, DB_PASSWORD, DB_USER, DB_PORT, DB_DATABASE, DATABASE_URL } = process.env;
 
-const connectionString = (`postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`);
-const pool = new pg.Pool({ DB_URL });
+// const connectionString = (`postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`);
+const connectionString = (`${DATABASE_URL}`);
+const pool = new pg.Pool({ connectionString });
 
 
 // pool.query('SELECT * FROM snippet')
