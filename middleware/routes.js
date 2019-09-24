@@ -5,12 +5,12 @@ const validate = require('./validate');
 
 const router = express.Router();
 
-router.get('/', (request, response, next) => {
-  response.send('Welcome to Snips!');
+router.get('/', (req, res, next) => {
+  res.send('Welcome to Snips!');
 });
 
-router.get('/api', (request, response) => {
-  response.send('Welcome to the Snips API!');
+router.get('/api', (req, res) => {
+  res.send('Welcome to the Snips API!');
 });
 
 /* Snippets routes */
