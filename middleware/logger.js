@@ -1,15 +1,25 @@
+/* eslint-disable no-console */
 const fs = require('fs').promises;
 const path = require('path');
 
-
-async function logger(req, res, next) {
-  const logPath = path.join(__dirname, '..', 'log.txt');
-  const logText = `${req.method} ${req.path}: ${Date.now()}\n`;
+/**
+ * Logs request method, path, and timestamp
+ * @param {Request} request
+ * @param {Response} response
+ * @param {function} next
+ * @example GET / 232534534535
+ */
+function logger(request, response, next) {
+  const info = `${request.method} ${request.path} | ${Date.now()}\n`;
+  const filePath = path.join(__dirname, '..', 'log.txt');
   try {
-    await fs.appendFile(logPath, logText);
+    // try to append it to file
+    fs.appendFile(filePath, info);
   } catch (err) {
-    console.error(err);
+    // if that fails, just log it to console
+    console.error(info);
   } finally {
+    // next calls the next piece of middleware
     next();
   }
 }

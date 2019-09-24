@@ -1,30 +1,35 @@
 {
-  "name": "server",
+  "name": "snips-backend",
   "version": "1.0.0",
-  "description": "snips server",
+  "description": "Backend for Snips app. Built with MVC architecture and a file-based DB.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iylim/snips-server.git"
+    "url": "git+https://github.com/talent-path-la/snips-backend.git"
   },
-  "author": "Ivy Lim",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/iylim/snips-server/issues"
+    "url": "https://github.com/talent-path-la/snips-backend/issues"
   },
-  "homepage": "https://github.com/iylim/snips-server#readme",
+  "homepage": "https://github.com/talent-path-la/snips-backend#readme",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "jest": "^24.9.0",
+    "jsonwebtoken": "^8.5.1",
     "nodemon": "^1.19.1",
     "pg": "^7.12.1",
     "pg-format": "^1.0.4",
-    "shortid": "^2.2.14"
+    "shortid": "^2.2.14",
+    "supertest": "^4.0.2"
   }
 }

@@ -1,52 +1,54 @@
 const Snippet = require('../models/Snippet.model');
-const ErrorWithHTTPStatus = require('../utils/errorWithHTTPStatus');
+const ErrorWithHttpStatus = require('../utils/ErrorWithHttpStatus');
 
-exports.createSnippet = async (req, res, next) => {
+exports.createSnippet = async (request, response, next) => {
   try {
-    const snippet = await Snippet.insert(req.body);
-    res.status(201).send(snippet); 
+    // create a snippet
+    const snippet = await Snippet.insert(request.body);
+    response.status(201).send(snippet);
   } catch (err) {
     next(err);
   }
 };
 
-exports.getAll = async ({ query }, res, next) => {
-  try { 
-    // 1. get data from snippets model
-    const snippet = await Snippet.select(query);
-    // 2. send it out
-    return res.send(snippet);
+exports.getAllSnippets = async ({ query }, response, next) => {
+  try {
+    // 1. get data from Snippets model
+    const snippets = await Snippet.select(query);
+    // 2. send that out
+    return response.send(snippets);
   } catch (err) {
     next(err);
   }
 };
 
-exports.getOne = async ({ params: { id } }, res, next) => {
+exports.getSnippetById = async ({ params: { id } }, response, next) => {
   try {
+    // get the snippet: call Snippet.select passing an id (from request.params)
     const snippet = await Snippet.select({ id });
     if (snippet.length === 0) {
-      throw new ErrorWithHTTPStatus('Id does not exist!', 404);    
+      throw new ErrorWithHttpStatus('ID does not exist', 404);
     }
-    res.send(snippet[0]);
+    // send that snippet back
+    response.send(snippet[0]);
   } catch (err) {
     next(err);
   }
 };
 
-
-exports.update = async (req, res, next) => {
+exports.update = async ({ params: { id }, body }, response, next) => {
   try {
-    const snippet = await Snippet.update(req.params.id, req.body);
-    res.status(200).send(snippet);
+    await Snippet.update(id, body);
+    response.send();
   } catch (err) {
     next(err);
   }
 };
 
-exports.delete = async (req, res, next) => {
+exports.delete = async ({ params: { id } }, response, next) => {
   try {
-    await Snippet.delete(req.params.id);
-    res.status(200).send('Deleted!');
+    await Snippet.delete(id);
+    response.status(204).send();
   } catch (err) {
     next(err);
   }
