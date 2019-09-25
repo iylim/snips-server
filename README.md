@@ -1,4 +1,5 @@
 # Snips ✂️ Backend
+[![Build Status](https://travis-ci.com/iylim/snips-server.svg?branch=master)](https://travis-ci.com/iylim/snips-server)
 
 Backend for Snips app.
 Built with MVC architecture and a file-based DB.
