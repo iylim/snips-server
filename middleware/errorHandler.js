@@ -1,4 +1,4 @@
-const ErrorWithHttpStatus = require('../utils/ErrorWithHttpStatus');
+const ErrorWithHttpStatus = require('../utils/ErrorWithHTTPStatus');
 
 /**
  * Sends appropriate error message and code to the client
@@ -8,8 +8,7 @@ const ErrorWithHttpStatus = require('../utils/ErrorWithHttpStatus');
  * @param {Function} next
  */
 const errorHandler = (err, request, response, next) => {
-  if (err instanceof ErrorWithHttpStatus)
-    response.status(err.status).send(err.message);
+  if (err instanceof ErrorWithHttpStatus) response.status(err.status).send(err.message);
   else response.status(500).send('Server error');
 };
 

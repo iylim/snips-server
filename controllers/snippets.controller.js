@@ -1,6 +1,5 @@
 const Snippet = require('../models/Snippet.model');
-const ErrorWithHttpStatus = require('../utils/ErrorWithHttpStatus');
-
+const ErrorWithHttpStatus = require('../utils/ErrorWithHTTPStatus');
 exports.createSnippet = async (request, response, next) => {
   try {
     // create a snippet
