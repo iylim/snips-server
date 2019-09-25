@@ -1,4 +1,4 @@
-const ErrorWithHttpStatus = require('../utils/ErrorWithHTTPStatus');
+const ErrorWithHttpStatus = require('../utils/ErrWithHttpStatus');
 
 /**
  * Sends appropriate error message and code to the client
