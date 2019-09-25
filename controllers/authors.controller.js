@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Author = require('../models/Author.model');
-const ErrorWithHttpStatus = require('../utils/ErrorWithHTTPStatus');
+const ErrorWithHttpStatus = require('../utils/ErrWithHttpStatus');
 
 exports.signup = async (request, response, next) => {
   try {
