@@ -1,5 +1,5 @@
 const db = require('../db');
-const ErrorWithHttpStatus = require('../utils/ErrorWithHTTPStatus');
+const ErrorWithHttpStatus = require('../utils/ErrWithHttpStatus');
 
 exports.insert = ({ password, name }) => {
   try {
