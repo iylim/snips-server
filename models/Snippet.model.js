@@ -1,6 +1,6 @@
 const format = require('pg-format');
 const db = require('../db');
-const ErrorWithHttpStatus = require('../utils/ErrorWithHTTPStatus');
+const ErrorWithHttpStatus = require('../utils/ErrorWithHTTPStatus.js');
 
 /**
  * a snippet object
