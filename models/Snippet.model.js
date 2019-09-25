@@ -22,8 +22,7 @@ const ErrorWithHttpStatus = require('../utils/errorWithHTTPStatus');
  */
 exports.insert = async ({ author, code, title, description, language }) => {
   try {
-    if (!author || !code || !title || !description || !language)
-      throw new ErrorWithHttpStatus('Missing properties', 400);
+    if (!author || !code || !title || !description || !language) throw new ErrorWithHttpStatus('Missing properties', 400);
     const result = await db.query(
       `INSERT INTO snippet (code, title, description, author, language) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [code, title, description, author, language]
@@ -131,8 +130,7 @@ exports.delete = async id => {
   try {
     const result = await db.query(`DELETE FROM snippet WHERE id = $1`, [id]);
     // check if some number of rows were deleted
-    if (result.rowCount === 0)
-      throw new ErrorWithHttpStatus(`Snippet with ID ${id} not found`, 404);
+    if (result.rowCount === 0) throw new ErrorWithHttpStatus(`Snippet with ID ${id} not found`, 404);
 
     /* Old code
     // Read in the db file
